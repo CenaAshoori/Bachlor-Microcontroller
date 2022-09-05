@@ -1,0 +1,226 @@
+#include <mega32.h>
+#include <delay.h> 
+#include <lcd.h>
+#include <stdio.h>
+
+#asm
+   .equ __lcd_port=0x1B ;PORTA
+#endasm
+
+#define KEYPAD_PORT PORTC
+#define KEYPAD_PIN PINC
+#define KEYPAD_DDR DDRC
+#define OUTPUT_PORT PORTD
+#define OUTPUT_DDR DDRD
+#define RESET_DDR DDRB.1
+#define RESET_PIN PINB.1
+
+#define Io_telecard PINB.5
+#define Reset_telecard PORTB.6
+#define Clk_telecard PORTB.7
+#define Check_insert PINB.4
+
+
+eeprom  int pass ,j ,n;
+unsigned char key[10];
+char array[64];
+
+unsigned char keypad();
+void change_pass();
+int enter_pass(); 
+void Resettelecard();
+void Readtelecard();
+   
+void main(void)
+{
+  char Temp;
+  lcd_init(16);
+  OUTPUT_DDR=0b10000000;
+  RESET_DDR =0;
+  DDRB.4=0; //Config Porta.4 = Input
+  DDRB.5=0; //Config Porta.5 = Input
+  DDRB.6=1; //Config Porta.6 = Output
+  DDRB.7=1; //Config Porta.7 = Output
+           
+    while (1) 
+    {  
+      lcd_clear(); 
+      lcd_puts(" # ENTER PASS"); 
+      lcd_gotoxy(0,1);
+      lcd_puts(" * CHANGE PASS");
+        
+      Temp=keypad();
+       
+      if(Temp=='#' && j!=0)
+      {
+       if(enter_pass()== pass)
+        {
+        lcd_clear();
+         lcd_puts("OPEN");
+          OUTPUT_PORT =128;
+           delay_ms(500); 
+            OUTPUT_PORT =0;
+          } 
+       else
+        {
+        lcd_clear(); 
+         lcd_puts("CLOSE"); 
+          delay_ms(500); 
+           j--;    
+         }   
+       }  
+       
+      else if(Temp=='*' && j!=0) change_pass();
+      
+      else if(j==0)
+      {
+       lcd_clear(); 
+       lcd_puts("SORRY");
+       while(1)
+        {
+        if(n==65524 || n==0 && RESET_PIN==0)
+         { 
+          lcd_clear();
+          lcd_puts("RESET");   
+          pass=1234;
+          j=3;
+          n=0; 
+          delay_ms(1000);
+          break;
+           }    
+          }  
+      }    
+ }
+}
+
+
+int enter_pass()
+{
+ int n=0 ,i=0 ,num;
+ lcd_clear(); 
+
+ while(i<=8) { 
+
+   key[i]=keypad();
+    
+    if(key[i]=='#' && i>3) 
+      { 
+       sscanf(key,"%u",&num);
+       return num;
+        } 
+      else if (key[i] =='*')
+        {   
+           i--; 
+           lcd_clear();
+           for(n=0;n<i;n++)lcd_putchar(key[n]);
+            }  
+        else if (i<8 && key[i]!='#') 
+          {
+           lcd_putchar(key[i]); 
+           i++; 
+            }
+   } 
+}       
+
+
+void change_pass()
+{
+ lcd_clear(); 
+ lcd_puts("ENTER OLD PASS"); 
+ delay_ms(500); 
+ 
+ while(j!=0)
+  { 
+   if(enter_pass()==pass) 
+    {
+     lcd_clear(); 
+      lcd_puts("ENTER NEW PASS"); 
+       delay_ms(500); 
+     pass = enter_pass();
+     lcd_clear(); 
+      lcd_puts("OK");
+       delay_ms(500);
+        return;     
+       }
+   else j--;   
+    }
+}
+ 
+       
+char keypad()
+{
+ unsigned char scanCode=0xf0 ,butNum;
+ 
+   while(scanCode==0xf0)
+   {  
+    KEYPAD_DDR = 0x0f;                
+    KEYPAD_PORT = 0xf0;                
+    delay_us(5);                    
+    scanCode= KEYPAD_PIN;  
+    if (Check_insert == 0)Readtelecard();
+      } 
+    KEYPAD_DDR = 0xf0;                
+    KEYPAD_PORT = 0x0f;                 
+    delay_us(5);                    
+    scanCode |= KEYPAD_PIN;    
+    
+          switch (scanCode) 
+          {
+           case 0xee: butNum='1'; break;
+           case 0xed: butNum='2'; break;
+           case 0xeb: butNum='3'; break;
+           case 0xe7: butNum=0; break;
+           case 0xde: butNum='4'; break;
+           case 0xdd: butNum='5'; break;
+           case 0xdb: butNum='6'; break;
+           case 0xd7: butNum=0; break;
+           case 0xbe: butNum='7'; break;
+           case 0xbd: butNum='8'; break;
+           case 0xbb: butNum='9'; break;
+           case 0xb7: butNum=0; break;                
+           case 0x7e: butNum='*'; break; 
+           case 0x7d: butNum='0'; break; 
+           case 0x7b: butNum='#'; break; 
+           case 0x77: butNum=0; break;
+           default: butNum='_';        
+            }; 
+            
+          delay_ms(220); 
+          return butNum;
+}
+
+
+void Resettelecard()
+{
+Reset_telecard=1;
+Clk_telecard=1;
+delay_ms(50);
+Clk_telecard=0;
+Reset_telecard=0;
+}
+
+
+void Readtelecard()
+{
+signed char i,j;
+
+ Resettelecard();
+
+ for(i=0;i<64;i++)
+ {
+   for(j=7;0<=j;j--)
+  {
+    if(Io_telecard==1){
+     array[i]|=1<<j;
+     }
+    else{
+     array[i]&=~(1<<j);
+    }
+   Clk_telecard=1;
+   delay_us(100);//Wait 10us
+   Clk_telecard=0;
+   }
+ } 
+ 
+}
+

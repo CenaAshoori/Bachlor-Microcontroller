@@ -1,0 +1,51 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+key                                                                               0x01B4      10
+_base_y                                                                           0x01BE       4
+_seed                                                                             0x01C2       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+pass                                                                              0x0000       2
+j                                                                                 0x0002       2
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+row                                                                               R5           1
+col                                                                               R4           1
+Temp                                                                              R7           1
+_lcd_x                                                                            R6           1
+_lcd_y                                                                            R9           1
+_lcd_maxx                                                                         R8           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+ext_int2_isr                                                                      0x000C4    157
+change_pass                                                                       0x00161     44
+keypad                                                                            0x0018D     57
+enter_pass                                                                        0x001C6    102
+main                                                                              0x0022C     83
+_lcd_delay_G100                                                                   0x0027F      4
+_lcd_ready                                                                        0x00283     17
+_lcd_write_nibble_G100                                                            0x00294     10
+_lcd_write_data                                                                   0x0029E     15
+_lcd_read_nibble_G100                                                             0x002AD      9
+lcd_read_byte0_G100                                                               0x002B6      9
+lcd_gotoxy                                                                        0x002BF     16
+lcd_clear                                                                         0x002CF     19
+lcd_putchar                                                                       0x002E2     26
+lcd_puts                                                                          0x002FC     15
+lcd_putsf                                                                         0x0030B     19
+_long_delay_G100                                                                  0x0031E      5
+_lcd_init_write_G100                                                              0x00323     12
+lcd_init                                                                          0x0032F     51
+get_buff_G101                                                                     0x00362     45
+_scanf_G101                                                                       0x0038F    322
+sscanf                                                                            0x004D1     43
+isdigit                                                                           0x004FC      9
+isspace                                                                           0x00505     11
+isxdigit                                                                          0x00510     15
