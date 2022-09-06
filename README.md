@@ -3,7 +3,11 @@
 
 In each following section you can see the picture of Proteus enviorment. Just tap on it.
 # During this course I just used `ATMEGA32`.
+| ![](1-Intro/5-Seven%20Segment%20Transistor/pic.jpg) | ![](1-Intro/1-LED/pic.jpg) |
+| :-------------------------------------------------: | :------------------------: |
+|                ![](13-Final/pic.png)                |   ![](13-Final/pic2.jpg)   |
 
+For more info and pictures go to each section.
 ## [1-Intro](1-Intro/README.md) (<a href="https://www.youtube.com/watch?v=L6JzgI2_S3E" target="blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="https://www.youtube.com/channel/uc8lkrtn9wff4frctr04sxva" height="15" width="30" />video</a>)
 
 ## [2-Turn on-off Red LED](2-Turn%20on-off%20Red%20LED/README.md)
@@ -19,8 +23,3 @@ In each following section you can see the picture of Proteus enviorment. Just ta
 ## [12-LCD & Keyboard + Interupt](12-LCD%20&%20Keyboard%20+%20Interupt/README.md)
 ## [13-Password Based Door Lock System - EEPROM, Transistor](13-Final/README.md) (<a href="https://youtu.be/Cq3QeL-kXac" target="blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="https://www.youtube.com/channel/uc8lkrtn9wff4frctr04sxva" height="15" width="30" />video</a>)
 
-| ![](1-Intro/5-Seven%20Segment%20Transistor/pic.jpg) | ![](1-Intro/1-LED/pic.jpg) |
-| :-------------------------------------------------: | :------------------------: |
-|                ![](13-Final/pic.png)                |   ![](13-Final/pic2.jpg)   |
-
-For more info and pictures go to each section.
